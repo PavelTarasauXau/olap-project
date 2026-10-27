@@ -1,7 +1,7 @@
 # Проект по дисциплине «Оперативный анализ данных»
 
-- **ФИО:** _<Тарасов Павел, Глебович Дмитрий>_
-- **Группа:** _<ПИ-231>_
+- **ФИО:** _<впишите>_
+- **Группа:** _<впишите>_
 - **Домен:** розничные продажи (`retail_dw`)
 
 ## Что считаем (метрика и вопросы)
@@ -30,11 +30,11 @@ docker exec -it olap_clickhouse clickhouse-client \
 
 ## Порты
 
-| Сервис            | Порт |
-| ----------------- | ---- |
-| ClickHouse HTTP   | 8123 |
+| Сервис | Порт |
+|--------|------|
+| ClickHouse HTTP | 8123 |
 | ClickHouse native | 9000 |
-| Metabase          | 3000 |
+| Metabase | 3000 |
 
 ## DuckDB (локальная проверка окружения)
 
@@ -57,3 +57,22 @@ init/01_schema.sql     # DDL таблиц ClickHouse
 scripts/               # init_ch.sh, duckdb_smoke.py
 data/raw/              # исходные CSV
 ```
+
+## DuckDB: таблицы и загрузка (З03)
+
+```bash
+python scripts/build_duckdb.py
+```
+
+Скрипт выполняет `sql/ddl_duckdb.sql` (создание таблиц), `sql/load_duckdb.sql` (загрузка из `data/raw/`) и `sql/checks_duckdb.sql` (проверки), результат пишет в `olap.duckdb`.
+
+Повторный запуск безопасен: DDL сначала удаляет таблицы (`DROP TABLE IF EXISTS`) и создаёт их заново, поэтому продажи не удваиваются.
+
+## Аналитический SQL (З04)
+
+```bash
+python scripts/build_duckdb.py      # собрать базу (если ещё нет)
+python scripts/run_analytics.py     # выполнить sql/canonical_metric.sql и sql/analytics.sql
+```
+
+`sql/analytics.sql` — три запроса по вопросам из `passport.md` (в запросах 2 и 3 оконные функции), `sql/canonical_metric.sql` — эталон оборота.
