@@ -1,0 +1,4 @@
+retail_local.duckdb
+olap.duckdb
+__pycache__/
+olap-project/
