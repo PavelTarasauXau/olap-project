@@ -26,15 +26,29 @@ docker exec -it olap_clickhouse clickhouse-client \
   --query "SELECT count() FROM retail_dw.fact_sales"   # → 15
 ```
 
+### Windows (PowerShell)
+
+`init_ch.sh` в PowerShell не запускается. Загрузка схемы и данных:
+
+```bash
+docker compose up -d
+Get-Content init/01_schema.sql -Raw | docker exec -i olap_clickhouse clickhouse-client --multiquery
+docker cp data/raw olap_clickhouse:/tmp/raw
+foreach ($t in "dim_store","dim_product","dim_date","fact_sales") {
+docker exec olap_clickhouse bash -c "clickhouse-client --query 'INSERT INTO retail_dw.$t FORMAT CSVWithNames' < /tmp/raw/$t.csv"
+}
+curl.exe http://localhost:8123/ping
+```
+
 Остановка: `docker compose down` (с удалением данных: `docker compose down -v`).
 
 ## Порты
 
-| Сервис | Порт |
-|--------|------|
-| ClickHouse HTTP | 8123 |
+| Сервис            | Порт |
+| ----------------- | ---- |
+| ClickHouse HTTP   | 8123 |
 | ClickHouse native | 9000 |
-| Metabase | 3000 |
+| Metabase          | 3000 |
 
 ## DuckDB (локальная проверка окружения)
 

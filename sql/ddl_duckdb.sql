@@ -1,5 +1,5 @@
--- DDL для DuckDB. Модель — по passport.md.
--- Скрипт можно запускать повторно: сначала таблицы удаляются, потом создаются заново.
+-- 3 лаба
+-- DDL для DuckDB. Модель — по passport.md. 
 
 DROP TABLE IF EXISTS fact_sales;
 DROP TABLE IF EXISTS dim_store;

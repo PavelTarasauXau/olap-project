@@ -1,0 +1,13 @@
+﻿['tbl', 'rows']
+('dim_store', 5)
+('dim_product', 8)
+('dim_date', 8)
+('fact_sales', 15)
+
+['null_keys', 'orphan_date', 'orphan_store', 'orphan_product']
+(0, 0, 0, 0)
+
+['turnover', 'total_qty']
+(Decimal('264.00'), 144)
+
+OK -> D:\UNI\olap\olap-project\olap.duckdb
