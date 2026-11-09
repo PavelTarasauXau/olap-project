@@ -1,0 +1,5 @@
+promo_id,promo_name,discount_percent,promo_type
+0,Без акции,0,None
+1,Новогодняя распродажа,10,Seasonal
+2,Желтый ценник,15,Discount
+3,Товар дня,20,Special
