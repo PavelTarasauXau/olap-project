@@ -1,7 +1,6 @@
--- З04. Аналитические запросы к модели из passport.md (с учетом новых данных).
+-- З04. Аналитические запросы к модели с учетом SCD2.
 
--- Вопрос 1 -> «Какой суммарный оборот и маржинальность приносят разные типы магазинов (store_type)?»
--- GROUP BY + расчет маржи на лету (оборот минус себестоимость * количество)
+-- Вопрос 1 -> Оборот и маржинальность по типам магазинов
 SELECT 
     s.store_type,
     count(DISTINCT s.store_id) AS stores_count,
@@ -10,13 +9,11 @@ SELECT
     round(sum(f.amount) - sum(p.unit_cost * f.qty), 2) AS total_margin
 FROM fact_sales f
 JOIN dim_store s ON f.store_id = s.store_id
-JOIN dim_product p ON f.product_id = p.product_id
+JOIN dim_product p ON f.product_surrogate_id = p.product_surrogate_id
 GROUP BY s.store_type
 ORDER BY turnover DESC;
 
-
--- Вопрос 2 -> «Как наличие промоакций (promo_type) влияет на средний объем проданных единиц товара за чек?»
--- GROUP BY + оконная функция для расчета доли каждого типа промо в общем обороте
+-- Вопрос 2 -> Влияние промоакций
 SELECT 
     pr.promo_type,
     pr.promo_name,
@@ -30,9 +27,7 @@ JOIN dim_promotion pr ON f.promo_id = pr.promo_id
 GROUP BY pr.promo_type, pr.promo_name
 ORDER BY turnover DESC;
 
-
--- Вопрос 3 -> «Какой оборот дают различные категории товаров с учетом их срока годности и брендов?»
--- GROUP BY + оконная функция rank() для ранжирования категорий и брендов внутри категорий
+-- Вопрос 3 -> Оборот по категориям и брендам с учетом версий товаров
 SELECT 
     p.category,
     p.brand,
@@ -41,6 +36,6 @@ SELECT
     sum(f.qty) AS total_qty,
     rank() OVER (PARTITION BY p.category ORDER BY sum(f.amount) DESC) as brand_rank_in_category
 FROM fact_sales f
-JOIN dim_product p ON f.product_id = p.product_id
+JOIN dim_product p ON f.product_surrogate_id = p.product_surrogate_id
 GROUP BY p.category, p.brand, p.shelf_life_days
 ORDER BY p.category, turnover DESC;

@@ -48,18 +48,18 @@ def run_pipeline():
     # 2. Проверка на пустые и «висячие» ключи (orphan keys)
     print("\n[Проверка 2] Поиск битых связей и пустых ключей (должно быть 0):")
     dq_query = """
-        SELECT
-            count(*) FILTER (WHERE f.date_id IS NULL OR f.store_id IS NULL OR f.product_id IS NULL OR f.promo_id IS NULL) AS null_keys,
-            count(*) FILTER (WHERE d.date_id IS NULL) AS orphan_date,
-            count(*) FILTER (WHERE s.store_id IS NULL) AS orphan_store,
-            count(*) FILTER (WHERE p.product_id IS NULL) AS orphan_product,
-            count(*) FILTER (WHERE pr.promo_id IS NULL) AS orphan_promo
-        FROM fact_sales f
-        LEFT JOIN dim_date      d  ON f.date_id    = d.date_id
-        LEFT JOIN dim_store     s  ON f.store_id   = s.store_id
-        LEFT JOIN dim_product   p  ON f.product_id = p.product_id
-        LEFT JOIN dim_promotion pr ON f.promo_id   = pr.promo_id;
-    """
+            SELECT
+                count(*) FILTER (WHERE f.date_id IS NULL OR f.store_id IS NULL OR f.product_surrogate_id IS NULL OR f.promo_id IS NULL) AS null_keys,
+                count(*) FILTER (WHERE d.date_id IS NULL) AS orphan_date,
+                count(*) FILTER (WHERE s.store_id IS NULL) AS orphan_store,
+                count(*) FILTER (WHERE p.product_surrogate_id IS NULL) AS orphan_product,
+                count(*) FILTER (WHERE pr.promo_id IS NULL) AS orphan_promo
+            FROM fact_sales f
+            LEFT JOIN dim_date      d  ON f.date_id              = d.date_id
+            LEFT JOIN dim_store     s  ON f.store_id             = s.store_id
+            LEFT JOIN dim_product   p  ON f.product_surrogate_id = p.product_surrogate_id
+            LEFT JOIN dim_promotion pr ON f.promo_id             = pr.promo_id;
+        """
     dq_result = con.execute(dq_query).fetchone()
     print(f"   -> Null-ключи в фактах: {dq_result[0]}")
     print(f"   -> Сироты по датам: {dq_result[1]}")
