@@ -10,8 +10,6 @@ ELT-скрипт для загрузки витрины данных розни�
 from pathlib import Path
 import os
 import duckdb
-# Импортируем наш генератор данных
-from generate_mock_data import generate_data
 
 def run_pipeline():
     root = Path(__file__).resolve().parents[1]
@@ -19,7 +17,6 @@ def run_pipeline():
     
     # ШАГ 0: Генерируем свежие большие данные в папку data/ перед началом ELT
     print("[*] Шаг 0: Генерация синтетических данных...")
-    generate_data()
 
     db_path = root / "olap.duckdb"
     print(f"\n[*] Подключение к базе данных: {db_path}")

@@ -38,12 +38,12 @@ def run_clickhouse_etl():
     print("\n--- ШАГ 3: Загрузка данных из CSV в ClickHouse ---")
     
     csv_mapping = [
-        ('dim_store', root / 'data/raw/dim_store.csv', []),
-        ('dim_product', root / 'data/raw/dim_product.csv', ['production_date', 'valid_from', 'valid_to']),
-        ('dim_date', root / 'data/raw/dim_date.csv', ['full_date']),
-        ('dim_promotion', root / 'data/raw/dim_promotion.csv', []),
-        ('fact_sales', root / 'data/raw/fact_sales.csv', [])
-    ]
+            ('dim_store', root / 'data/dim_store.csv', []),
+            ('dim_product', root / 'data/dim_product.csv', ['production_date', 'valid_from', 'valid_to']),
+            ('dim_date', root / 'data/dim_date.csv', ['full_date']),
+            ('dim_promotion', root / 'data/dim_promotion.csv', []),
+            ('fact_sales', root / 'data/fact_sales.csv', [])
+        ]
 
     for tbl_name, csv_path, date_cols in csv_mapping:
         print(f"   -> Загрузка {tbl_name} из {csv_path.name}...")
