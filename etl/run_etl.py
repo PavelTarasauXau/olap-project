@@ -10,15 +10,21 @@ ELT-скрипт для загрузки витрины данных розни�
 from pathlib import Path
 import os
 import duckdb
+# Импортируем наш генератор данных
+from generate_mock_data import generate_data
 
 def run_pipeline():
-    # Определяем корневую папку проекта (на уровень выше папки etl)
     root = Path(__file__).resolve().parents[1]
     os.chdir(root)
     
+    # ШАГ 0: Генерируем свежие большие данные в папку data/ перед началом ELT
+    print("[*] Шаг 0: Генерация синтетических данных...")
+    generate_data()
+
     db_path = root / "olap.duckdb"
-    print(f"[*] Подключение к базе данных: {db_path}")
+    print(f"\n[*] Подключение к базе данных: {db_path}")
     con = duckdb.connect(str(db_path))
+    # ... дальше весь твой код без изменений ...
 
     print("\n--- ШАГ 1: Создание структуры таблиц (DDL) ---")
     # Переинициализация таблиц защищает от удвоения данных при повторном запуске

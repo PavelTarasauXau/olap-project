@@ -1,0 +1,5 @@
+promo_id,promo_name,discount_percent,promo_type
+0,Без промо,0,None
+1,Желтый ценник (-10%),10,Discount
+2,Черная пятница (-25%),25,Sale
+3,Товар недели (-15%),15,Weekly
