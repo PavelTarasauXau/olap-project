@@ -20,7 +20,7 @@ def run_clickhouse_etl():
     duck_con = duckdb.connect(str(duck_path), read_only=True)
 
     print("[*] Подключение к ClickHouse (localhost:8123)...")
-    ch_client = clickhouse_connect.get_client(host='localhost', port=8123, username='default', password='')
+    ch_client = clickhouse_connect.get_client(host='localhost', port=8123, username='default', password='') # тут меня host = 'localhost' на host = 172.19.0.2
 
     print("\n--- ШАГ 1: Создание структуры таблиц в ClickHouse (DDL) ---")
     ddl_path = root / "sql" / "ddl_clickhouse.sql"

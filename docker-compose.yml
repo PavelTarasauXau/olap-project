@@ -5,7 +5,7 @@ services:
     environment:
       CLICKHOUSE_SKIP_USER_SETUP: "1"
     ports:
-      - "8123:8123"
+      - "8125:8123"
       - "9000:9000"
     volumes:
       # DDL + sample: только scripts/init_ch.sh (ClickHouse не использует initdb.d)
